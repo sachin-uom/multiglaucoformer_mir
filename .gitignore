@@ -1,0 +1,48 @@
+# LaTeX temporary files
+*.aux
+*.acn
+*.apc
+*.glo
+*.ist
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.run.xml
+*.nav
+*.snm
+*.dvi
+*.idx
+*.ind
+*.ilg
+*.bak
+*.gz
+*.xdv
+*.md5
+*.lb
+*.cb
+*-blx.bib
+*-blx.aux
+*.spl
+*.gz(busy)
+*.dpth
+*.scon
+_minted*
+
+# Editor specific files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# LaTeX Workshop output directory (if you used %OUTDIR%)
+_build/
+
+# PDFs (optional - commit if you want versioned PDFs, otherwise ignore)
+# If you want to commit the final PDF, comment out the line below
+#*.pdf
