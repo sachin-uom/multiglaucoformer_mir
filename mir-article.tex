@@ -49,7 +49,7 @@
 %%%%  template package for technical guidance.
 %%%%%=============================================================================%%%%
 
-\jyear{2021}%
+\jyear{2026}%
 
 %% as per the requirement new theorem styles can be included as shown below
 \theoremstyle{thmstyleone}%
@@ -168,7 +168,7 @@ The present study instead examines supervised diagnostic fusion of paired fundus
     \scriptsize
     \setlength{\tabcolsep}{5pt}
     \resizebox{\textwidth}{!}{%
-        \begin{tabular}{p{0.13\textwidth} p{0.16\textwidth} p{0.24\textwidth} p{0.20\textwidth} p{0.23\textwidth}}
+        \begin{tabular}{|p{0.13\textwidth}|p{0.16\textwidth}|p{0.24\textwidth}|p{0.20\textwidth}|p{0.23\textwidth}|}
             \hline
             \textbf{Study}                                                                              &
             \textbf{Modality / Dataset}                                                                 &
@@ -182,48 +182,56 @@ The present study instead examines supervised diagnostic fusion of paired fundus
             Standardized benchmark with optic disc/cup segmentation and glaucoma classification methods &
             Fundus-based glaucoma assessment                                                            &
             Fundus-only benchmark; does not use OCT information                                                                                 \\
+            \hline
 
             \cite{shyamalee2022glaucoma,diaz2019cnns,shyamalee2022cnn}                                  &
             Fundus / RIM-ONE, ACRIMA and related datasets                                               &
             Segmentation-guided and transfer-learning-based CNN pipelines                               &
             Glaucoma screening / classification                                                         &
             Fundus-only analysis; limited use of depth-resolved retinal structure                                                               \\
+            \hline
 
             \cite{asaoka2019using,thompson2020assessment}                                               &
             OCT-based datasets                                                                          &
             Transfer learning on OCT maps and segmentation-free CNN analysis of OCT B-scans             &
             OCT-based glaucoma detection                                                                &
             OCT-only analysis; does not exploit fundus contextual information                                                                   \\
+            \hline
 
             \cite{mehta2021automated}                                                                   &
             Fundus, OCT, and clinical variables                                                         &
             Modality-specific modelling with decision-level fusion                                      &
             Automated glaucoma detection                                                                &
             Uses multiple information sources, but does not provide controlled comparison of fusion depths                                      \\
+            \hline
 
             \cite{luo2023harvard,hwang2025utilization,lim2022use}                                       &
             OCT, visual field, fundus, and/or clinical information                                      &
             Multimodal learning for glaucoma detection or progression-related assessment                &
             Detection / progression analysis                                                            &
             Different modality combinations and objectives; not focused on paired fundus--OCT fusion-depth comparison                           \\
+            \hline
 
             \cite{wu2023gamma}                                                                          &
             Fundus and 3D OCT / GAMMA                                                                   &
             Multimodal glaucoma grading benchmark with paired fundus and OCT data                       &
             Three-class glaucoma grading                                                                &
             Primarily grading-focused; challenge methods generally use fixed fusion formulations                                                \\
+            \hline
 
             \cite{wang2024geometric}                                                                    &
             Fundus and OCT / ophthalmic multimodal datasets                                             &
             Geometric correspondence-based multimodal learning for fundus--OCT fusion                   &
             Ophthalmic image analysis including glaucoma                                                &
             Emphasizes geometric correspondence, but does not compare early, deep, and late fusion under one protocol                           \\
+            \hline
 
             \cite{cai2022corolla,zhao2025enhancing}                                                     &
             Fundus and OCT / GAMMA                                                                      &
             Task-specific multimodal fusion frameworks for glaucoma grading                             &
             Three-class glaucoma grading                                                                &
             Strong task-specific designs, but mainly grading-focused and based on fixed fusion strategies                                       \\
+            \hline
 
             \textbf{This study}                                                                         &
             Fundus and 3D OCT / GAMMA                                                                   &
@@ -231,8 +239,7 @@ The present study instead examines supervised diagnostic fusion of paired fundus
             Binary screening and three-class grading                                                    &
             Systematically evaluates fusion depth under a unified preprocessing, training, robustness, calibration, and explainability protocol \\
             \hline
-        \end{tabular}
-    }
+        \end{tabular}}
 \end{table*}
 
 Overall, prior work reveals four main gaps. First, single-modality methods underuse the complementary information in fundus and OCT images. Second, multimodal studies commonly adopt fixed fusion designs, providing limited insight into the effect of interaction depth. Third, most GAMMA-based methods emphasize multiclass grading rather than referral-oriented binary screening. Finally, the limited size of paired fundus--OCT datasets increases the need for data-efficient OCT representation, controlled training and robust evaluation. These gaps motivate the systematic comparison of transformer-based Early, Deep, and Late Fusion strategies for both glaucoma screening and grading.
@@ -279,7 +286,7 @@ Representative fundus and OCT inputs are shown in Figure~\ref{fig:raw-fundus-oct
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\columnwidth]{images/raw-fundus-oct.png}
+    \includegraphics[width=0.8\textwidth]{images/raw-fundus-oct.png}
     \caption{Representative paired inputs from the GAMMA dataset: a color fundus photograph and a corresponding OCT B-scan.}
     \label{fig:raw-fundus-oct}
 \end{figure}
@@ -683,7 +690,7 @@ application.
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\columnwidth]{images/web-app-gui.png}
+    \includegraphics[width=\textwidth]{images/web-app-gui.png}
     \caption{MultiGlaucoFormer research interface showing paired fundus and OCT input, glaucoma-grading output, and visual explanations.}
     \label{sfig:webapp}
 \end{figure}
@@ -732,13 +739,12 @@ with OCT explainability obtained from the three highest-MIL-attention B-scans (E
 \section{Results}
 \label{sec:results}
 
-This section reports the performance of the Early, Deep, and Late Fusion strategies for binary glaucoma screening and three-class glaucoma grading. Results are first presented using the official GAMMA training-validation-test partition, followed by the five-fold development-partition robustness analysis and bootstrap confidence intervals for glaucoma grading. The selected model configurations, ablation results, explainability outputs, and observed error patterns are subsequently reported. %Additional optimization curves, robustness visualizations, bootstrap distributions, and computational-efficiency results are provided in the Supplementary Material.
+This section reports the performance of the Early, Deep, and Late Fusion strategies for binary glaucoma screening and three-class glaucoma grading. Results are first presented using the official GAMMA training-validation-test partition, followed by the five-fold development-partition robustness analysis and bootstrap confidence intervals for glaucoma grading. The selected model configurations, ablation results, explainability outputs, and observed error patterns are subsequently reported.
 
 \subsection{Selected Model Configurations}
 \label{subsec:selected_configurations}
 
 Hyperparameter optimization was performed independently for each fusion strategy and diagnostic task (50 Optuna trials per strategy for screening and 100 for grading). Transformer backbone selection was included in the same search space as the remaining architectural and training hyperparameters; hence, Tables~\ref{tab:selected_configs_screening} and~\ref{tab:selected_configs_grading} report the best jointly optimized configurations for binary screening and multiclass grading, respectively, selected by validation performance rather than backbone-matched comparisons. Accordingly, the reported differences reflect the performance of each optimized fusion pipeline and do not isolate fusion depth independently of backbone choice.
-%Supplementary Table~S1 provides the complete search space. 
 For binary screening, FiLM modulation (Early), modality-token MHA with gating (Deep), and branch-wise temperature scaling with the uncertainty-aware confidence network (Late) were retained; for grading, Early and Late Fusion enhancements were retained, whereas Deep Fusion used simpler latent fusion without MHA and gating.
 
 The selected backbones reflect complementary inductive biases. ViT and DeiT provide global token-level self-attention for modelling long-range spatial relationships, Swin Transformer preserves hierarchical local retinal-layer and texture information, and CoAtNet combines convolutional locality with attention-based global modelling, which can be advantageous in limited-data settings. For grading, Early and Late Fusion selected CoAtNet for the fundus branch and Swin Transformer for the OCT branch, suggesting that hybrid convolution-attention representations and hierarchical local attention provide complementary multimodal information. In contrast, Deep Fusion selected ViT-small for both modalities, indicating that a shared global-attention representation space may facilitate latent-level alignment between fundus and OCT features. Overall, these results highlight the complementary roles of different backbone families and support the use of a backbone-agnostic fusion framework rather than enforcing a single encoder architecture across all fusion strategies.
@@ -748,12 +754,14 @@ The selected backbones reflect complementary inductive biases. ViT and DeiT prov
     \caption{Selected hyperparameters for binary glaucoma screening from Optuna optimization (50 trials per fusion strategy).}
     \label{tab:selected_configs_screening}
     \scriptsize
-    \setlength{\tabcolsep}{3pt}
-    \renewcommand{\arraystretch}{0.88}
-    \resizebox{\textwidth}{!}{%
+    \tiny
+    \resizebox{\columnwidth}{!}{%
         \begin{tabular}{|l|c|c|c|}
             \hline
-            \textbf{Hyperparameter} & \textbf{Early}        & \textbf{Deep}         & \textbf{Late}         \\
+            \textbf{Hyperparameter} &
+            \textbf{Early Fusion}   &
+            \textbf{Deep Fusion}    &
+            \textbf{Late Fusion}                                                                            \\
             \hline
             Learning Rate           & $1.01{\times}10^{-4}$ & $1.19{\times}10^{-4}$ & $5.87{\times}10^{-5}$ \\
             Fine-tune LR            & $4.90{\times}10^{-6}$ & $3.16{\times}10^{-6}$ & $6.15{\times}10^{-6}$ \\
@@ -778,12 +786,14 @@ The selected backbones reflect complementary inductive biases. ViT and DeiT prov
     \caption{Selected hyperparameters for multiclass glaucoma grading from Optuna optimization (100 trials per fusion strategy).}
     \label{tab:selected_configs_grading}
     \scriptsize
-    \setlength{\tabcolsep}{3pt}
-    \renewcommand{\arraystretch}{0.88}
-    \resizebox{\textwidth}{!}{%
+    \tiny
+    \resizebox{\columnwidth}{!}{%
         \begin{tabular}{|l|c|c|c|}
             \hline
-            \textbf{Hyperparameter} & \textbf{Early}        & \textbf{Deep}         & \textbf{Late}         \\
+            \textbf{Hyperparameter} &
+            \textbf{Early Fusion}   &
+            \textbf{Deep Fusion}    &
+            \textbf{Late Fusion}                                                                            \\
             \hline
             Learning Rate           & $3.32{\times}10^{-5}$ & $3.22{\times}10^{-5}$ & $2.85{\times}10^{-5}$ \\
             Weight Decay            & $7.60{\times}10^{-4}$ & $1.03{\times}10^{-3}$ & $2.08{\times}10^{-4}$ \\
@@ -813,24 +823,29 @@ The selected backbones reflect complementary inductive biases. ViT and DeiT prov
 
 Table~\ref{performance-metrics-table} reports the official test-set screening performance of the best validation-selected model from each fusion strategy. The table includes threshold-independent discrimination measures, operating-point classification measures, and the Brier score for probabilistic accuracy.
 
-\begin{table}[htb]
+\begin{table}[!t]
     \centering
     \caption{Official test-set performance of the selected models for binary glaucoma screening.}
     \label{performance-metrics-table}
+    \scriptsize
+    \tiny
     \resizebox{\columnwidth}{!}{%
         \begin{tabular}{|l|c|c|c|}
             \hline
-            \textbf{Metric} & \textbf{Early Fusion} & \textbf{Deep Fusion} & \textbf{Late Fusion} \\
+            \textbf{Metric}       &
+            \textbf{Early Fusion} &
+            \textbf{Deep Fusion}  &
+            \textbf{Late Fusion}                                               \\
             \hline
-            AUC-ROC         & 0.9743                & \textbf{0.9952}      & 0.9835               \\
-            AUC-PR          & 0.9776                & \textbf{0.9951}      & 0.9812               \\
-            Accuracy        & 0.9200                & \textbf{0.9500}      & \textbf{0.9500}      \\
-            Precision (PPV) & 0.9019                & 0.9231               & \textbf{0.9400}      \\
-            Sensitivity     & 0.9387                & \textbf{0.9796}      & 0.9592               \\
-            Specificity     & 0.9019                & 0.9215               & \textbf{0.9412}      \\
-            F1-score        & 0.9200                & \textbf{0.9504}      & 0.9495               \\
-            Brier Score     & 0.0761                & \textbf{0.0396}      & 0.0434               \\
-            Cohen's Kappa   & 0.8401                & \textbf{0.9000}      & \textbf{0.9000}      \\
+            AUC-ROC               & 0.9743 & \textbf{0.9952} & 0.9835          \\
+            AUC-PR                & 0.9776 & \textbf{0.9951} & 0.9812          \\
+            Accuracy              & 0.9200 & \textbf{0.9500} & \textbf{0.9500} \\
+            Precision (PPV)       & 0.9019 & 0.9231          & \textbf{0.9400} \\
+            Sensitivity           & 0.9387 & \textbf{0.9796} & 0.9592          \\
+            Specificity           & 0.9019 & 0.9215          & \textbf{0.9412} \\
+            F1-score              & 0.9200 & \textbf{0.9504} & 0.9495          \\
+            Brier Score           & 0.0761 & \textbf{0.0396} & 0.0434          \\
+            Cohen's Kappa         & 0.8401 & \textbf{0.9000} & \textbf{0.9000} \\
             \hline
         \end{tabular}}
 \end{table}
@@ -838,18 +853,17 @@ Table~\ref{performance-metrics-table} reports the official test-set screening pe
 All three strategies achieved AUC-ROC values above 0.97. Deep Fusion achieved the highest AUC-ROC of 0.9952 and AUC-PR of 0.9951. Deep and Late Fusion both achieved an accuracy of 0.9500 and Cohen's kappa of 0.9000. Deep Fusion produced the highest sensitivity of 0.9796 and F1-score of 0.9504, whereas Late Fusion produced the highest precision of 0.9400 and specificity of 0.9412. Deep Fusion also obtained the lowest Brier score of 0.0396, followed by Late Fusion at 0.0434.
 
 Deep Fusion correctly identified 48 of 49 glaucomatous test samples (one false negative), compared with 47 for Late Fusion and 46 for Early Fusion; Late Fusion produced the fewest false positives. Figure~\ref{fig:screen_roc_pr} shows the corresponding ROC and precision--recall curves, and Figure~\ref{fig:screen_cm} presents the confusion matrices.
-%Training and validation curves, epoch-wise validation AUC trajectories, and the parameter, FLOP, and inference-latency analysis are provided in the Supplementary Figures~S1--S3.
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/roc-pr-curves.png}
+    \includegraphics[width=\textwidth]{images/roc-pr-curves.png}
     \caption{Receiver operating characteristic and precision--recall curves for the selected Early, Deep, and Late Fusion screening models on the official test set.}
     \label{fig:screen_roc_pr}
 \end{figure*}
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/confusion-matrices.png}
+    \includegraphics[width=\textwidth]{images/confusion-matrices.png}
     \caption{Confusion matrices of the selected Early, Deep, and Late Fusion screening models on the official test set.}
     \label{fig:screen_cm}
 \end{figure*}
@@ -860,7 +874,6 @@ Deep Fusion correctly identified 48 of 49 glaucomatous test samples (one false n
 Five-fold robustness analysis was performed by partitioning the combined official training and validation sets into five stratified development folds.
 %(Supplementary Table~S7). 
 Deep and Late Fusion maintained higher mean discrimination than Early Fusion (mean AUC-ROC 0.988). Deep Fusion achieved the highest mean sensitivity ($0.931\pm0.057$), whereas Late Fusion achieved the highest mean accuracy ($0.934\pm0.016$), precision ($0.951\pm0.027$), and F1-score ($0.931\pm0.019$). Figure~\ref{sfig:cv_screen_acc_loss} reports the fold-averaged screening curves.
-%Supplementary Figures~S9--S12 report the fold-averaged screening curves and accumulated confusion matrices.
 
 \begin{figure*}[!t]
     \centering
@@ -914,24 +927,22 @@ Across fusion strategies, the early-glaucoma class produced the lowest class-wis
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/multiclass_confusion_matrices.png}
+    \includegraphics[width=\textwidth]{images/multiclass_confusion_matrices.png}
     \caption{Confusion matrices of the selected Early, Deep, and Late Fusion models for multiclass glaucoma grading on the official test set.}
     \label{fig:multiclass_confusion_matrices}
 \end{figure*}
 
-%The one-vs-rest ROC curves and grading training curves are provided in Supplementary Figures~S4--S6.
 
 \subsubsection{Five-Fold Robustness Analysis}
 \label{subsubsec:grading_robustness}
 
 The grading robustness analysis followed the same development-partition procedure. Deep and Late Fusion both achieved a mean accuracy of 0.752. Deep Fusion produced the highest mean QWK of $0.820\pm0.021$, whereas Late Fusion produced the highest mean macro-F1 ($0.703\pm0.032$), weighted-F1 ($0.757\pm0.032$), and OvR AUC-ROC ($0.904\pm0.007$). These results support the ordinal error analysis in Section~\ref{subsubsec:misclassification_results}.
-%Metric distributions are in Supplementary Figure~S13, and accumulated confusion matrices are in Supplementary Figure~S14; together
 
 \subsubsection{Bootstrap Confidence Intervals}
 \label{subsubsec:grading_bootstrap}
 
 Non-parametric bootstrap resampling with 1,000 replicates was applied to the official test-set grading predictions. % (Supplementary Table~S4). 
-Deep Fusion achieved the highest bootstrap mean QWK of $0.860\pm0.031$ [0.80, 0.92], compared with [0.73, 0.87] for Early Fusion and [0.77, 0.90] for Late Fusion. Late Fusion achieved the highest bootstrap mean macro AUC-ROC and OvR AUC-PR. %Confidence intervals overlapped across strategies; bootstrap distributions are shown in Supplementary Figure~S15.
+Deep Fusion achieved the highest bootstrap mean QWK of $0.860\pm0.031$ [0.80, 0.92], compared with [0.73, 0.87] for Early Fusion and [0.77, 0.90] for Late Fusion. Late Fusion achieved the highest bootstrap mean macro AUC-ROC and OvR AUC-PR.
 
 \subsection{Ablation Analysis}
 \label{subsec:ablation_results}
@@ -943,53 +954,53 @@ Ablation experiments assessed multimodal input, OCT-MIL, ROI cropping, and fusio
     \caption{Ablation results for binary glaucoma screening. Values are rounded to two decimal places.}
     \label{stab:binary_ablation}
     \resizebox{\textwidth}{!}{%
-        \begin{tabular}{|l|cccc|cccc|cccc|}
+        \begin{tabular}{lcccccccccccc}
             \hline
-            \multirow{2}{*}{\textbf{Configuration}}    &
-            \multicolumn{4}{c|}{\textbf{Early Fusion}} &
-            \multicolumn{4}{c|}{\textbf{Deep Fusion}}  &
-            \multicolumn{4}{c|}{\textbf{Late Fusion}}                              \\
+            \multirow{2}{*}{\textbf{Configuration}}   &
+            \multicolumn{4}{c}{\textbf{Early Fusion}} &
+            \multicolumn{4}{c}{\textbf{Deep Fusion}}  &
+            \multicolumn{4}{c}{\textbf{Late Fusion}}                              \\
             \cline{2-13}
-                                                       & Acc  & AUC  & Prec & Sens
-                                                       & Acc  & AUC  & Prec & Sens
-                                                       & Acc  & AUC  & Prec & Sens \\
+                                                      & Acc  & AUC  & Prec & Sens
+                                                      & Acc  & AUC  & Prec & Sens
+                                                      & Acc  & AUC  & Prec & Sens \\
             \hline
             No FiLM modulation
-                                                       & 0.89 & 0.96 & 0.84 & 0.96
-                                                       & --   & --   & --   & --
-                                                       & --   & --   & --   & --   \\
+                                                      & 0.89 & 0.96 & 0.84 & 0.96
+                                                      & --   & --   & --   & --
+                                                      & --   & --   & --   & --   \\
             No cross-attention and gating
-                                                       & --   & --   & --   & --
-                                                       & 0.95 & 0.99 & 0.96 & 0.94
-                                                       & --   & --   & --   & --   \\
+                                                      & --   & --   & --   & --
+                                                      & 0.95 & 0.99 & 0.96 & 0.94
+                                                      & --   & --   & --   & --   \\
             No scaling and confidence network
-                                                       & --   & --   & --   & --
-                                                       & --   & --   & --   & --
-                                                       & 0.94 & 0.98 & 0.98 & 0.90 \\
+                                                      & --   & --   & --   & --
+                                                      & --   & --   & --   & --
+                                                      & 0.94 & 0.98 & 0.98 & 0.90 \\
             \hline
             Fundus only
-                                                       & 0.92 & 0.97 & 0.90 & 0.94
-                                                       & 0.90 & 0.96 & 0.92 & 0.88
-                                                       & 0.94 & 0.97 & 0.94 & 0.94 \\
+                                                      & 0.92 & 0.97 & 0.90 & 0.94
+                                                      & 0.90 & 0.96 & 0.92 & 0.88
+                                                      & 0.94 & 0.97 & 0.94 & 0.94 \\
             OCT only
-                                                       & 0.92 & 0.97 & 0.89 & 0.96
-                                                       & 0.89 & 0.94 & 0.87 & 0.92
-                                                       & 0.90 & 0.96 & 0.92 & 0.88 \\
+                                                      & 0.92 & 0.97 & 0.89 & 0.96
+                                                      & 0.89 & 0.94 & 0.87 & 0.92
+                                                      & 0.90 & 0.96 & 0.92 & 0.88 \\
             \hline
             No OCT-MIL
-                                                       & 0.90 & 0.97 & 0.90 & 0.90
-                                                       & 0.88 & 0.95 & 0.89 & 0.86
-                                                       & 0.94 & 0.99 & 0.89 & 1.00 \\
+                                                      & 0.90 & 0.97 & 0.90 & 0.90
+                                                      & 0.88 & 0.95 & 0.89 & 0.86
+                                                      & 0.94 & 0.99 & 0.89 & 1.00 \\
             \hline
             No ROI cropping
-                                                       & 0.89 & 0.95 & 0.87 & 0.92
-                                                       & 0.92 & 0.99 & 0.90 & 0.94
-                                                       & 0.96 & 0.99 & 0.94 & 0.98 \\
+                                                      & 0.89 & 0.95 & 0.87 & 0.92
+                                                      & 0.92 & 0.99 & 0.90 & 0.94
+                                                      & 0.96 & 0.99 & 0.94 & 0.98 \\
             \hline
             Selected model
-                                                       & 0.92 & 0.97 & 0.90 & 0.94
-                                                       & 0.95 & 1.00 & 0.92 & 0.98
-                                                       & 0.95 & 0.98 & 0.94 & 0.96 \\
+                                                      & 0.92 & 0.97 & 0.90 & 0.94
+                                                      & 0.95 & 1.00 & 0.92 & 0.98
+                                                      & 0.95 & 0.98 & 0.94 & 0.96 \\
             \hline
         \end{tabular}}
 \end{table*}
@@ -999,53 +1010,53 @@ Ablation experiments assessed multimodal input, OCT-MIL, ROI cropping, and fusio
     \caption{Ablation results for multiclass glaucoma grading. Values are rounded to two decimal places.}
     \label{stab:multiclass_ablation}
     \resizebox{\textwidth}{!}{%
-        \begin{tabular}{|l|cccc|cccc|cccc|}
+        \begin{tabular}{lcccccccccccc}
             \hline
-            \multirow{2}{*}{\textbf{Configuration}}    &
-            \multicolumn{4}{c|}{\textbf{Early Fusion}} &
-            \multicolumn{4}{c|}{\textbf{Deep Fusion}}  &
-            \multicolumn{4}{c|}{\textbf{Late Fusion}}                              \\
+            \multirow{2}{*}{\textbf{Configuration}}   &
+            \multicolumn{4}{c}{\textbf{Early Fusion}} &
+            \multicolumn{4}{c}{\textbf{Deep Fusion}}  &
+            \multicolumn{4}{c}{\textbf{Late Fusion}}                              \\
             \cline{2-13}
-                                                       & Acc  & QWK  & F1   & AUC
-                                                       & Acc  & QWK  & F1   & AUC
-                                                       & Acc  & QWK  & F1   & AUC  \\
+                                                      & Acc  & QWK  & F1   & AUC
+                                                      & Acc  & QWK  & F1   & AUC
+                                                      & Acc  & QWK  & F1   & AUC  \\
             \hline
             No FiLM modulation
-                                                       & 0.76 & 0.80 & 0.71 & 0.89
-                                                       & --   & --   & --   & --
-                                                       & --   & --   & --   & --   \\
+                                                      & 0.76 & 0.80 & 0.71 & 0.89
+                                                      & --   & --   & --   & --
+                                                      & --   & --   & --   & --   \\
             With cross-attention and gating
-                                                       & --   & --   & --   & --
-                                                       & 0.80 & 0.85 & 0.75 & 0.92
-                                                       & --   & --   & --   & --   \\
+                                                      & --   & --   & --   & --
+                                                      & 0.80 & 0.85 & 0.75 & 0.92
+                                                      & --   & --   & --   & --   \\
             No scaling and confidence network
-                                                       & --   & --   & --   & --
-                                                       & --   & --   & --   & --
-                                                       & 0.74 & 0.78 & 0.67 & 0.92 \\
+                                                      & --   & --   & --   & --
+                                                      & --   & --   & --   & --
+                                                      & 0.74 & 0.78 & 0.67 & 0.92 \\
             \hline
             Fundus only
-                                                       & 0.67 & 0.70 & 0.60 & 0.89
-                                                       & 0.75 & 0.80 & 0.70 & 0.88
-                                                       & 0.76 & 0.81 & 0.73 & 0.89 \\
+                                                      & 0.67 & 0.70 & 0.60 & 0.89
+                                                      & 0.75 & 0.80 & 0.70 & 0.88
+                                                      & 0.76 & 0.81 & 0.73 & 0.89 \\
             OCT only
-                                                       & 0.66 & 0.65 & 0.60 & 0.86
-                                                       & 0.66 & 0.67 & 0.49 & 0.87
-                                                       & 0.63 & 0.69 & 0.61 & 0.85 \\
+                                                      & 0.66 & 0.65 & 0.60 & 0.86
+                                                      & 0.66 & 0.67 & 0.49 & 0.87
+                                                      & 0.63 & 0.69 & 0.61 & 0.85 \\
             \hline
             No OCT-MIL
-                                                       & 0.73 & 0.80 & 0.66 & 0.88
-                                                       & 0.74 & 0.80 & 0.67 & 0.90
-                                                       & 0.78 & 0.84 & 0.73 & 0.92 \\
+                                                      & 0.73 & 0.80 & 0.66 & 0.88
+                                                      & 0.74 & 0.80 & 0.67 & 0.90
+                                                      & 0.78 & 0.84 & 0.73 & 0.92 \\
             \hline
             No ROI cropping
-                                                       & 0.75 & 0.80 & 0.69 & 0.90
-                                                       & 0.80 & 0.85 & 0.75 & 0.93
-                                                       & 0.74 & 0.78 & 0.68 & 0.91 \\
+                                                      & 0.75 & 0.80 & 0.69 & 0.90
+                                                      & 0.80 & 0.85 & 0.75 & 0.93
+                                                      & 0.74 & 0.78 & 0.68 & 0.91 \\
             \hline
             Selected model
-                                                       & 0.74 & 0.81 & 0.68 & 0.88
-                                                       & 0.81 & 0.86 & 0.76 & 0.91
-                                                       & 0.78 & 0.84 & 0.74 & 0.92 \\
+                                                      & 0.74 & 0.81 & 0.68 & 0.88
+                                                      & 0.81 & 0.86 & 0.76 & 0.91
+                                                      & 0.78 & 0.84 & 0.74 & 0.92 \\
             \hline
         \end{tabular}}
 \end{table*}
@@ -1061,14 +1072,14 @@ Grad-CAM on fundus images and OCT-MIL attention with slice-level Grad-CAM were g
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\columnwidth]{images/fundus-xai.png}
+    \includegraphics[width=\textwidth]{images/fundus-xai.png}
     \caption{Fundus Grad-CAM visualizations for representative test samples from the selected binary screening models.}
     \label{sfig:fundus_xai}
 \end{figure}
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\columnwidth]{images/oct-xai.png}
+    \includegraphics[width=\textwidth]{images/oct-xai.png}
     \caption{OCT Grad-CAM visualizations for representative test samples from the selected binary screening models, showing three high-attention OCT B-scans per model.}
     \label{sfig:oct_xai}
 \end{figure}
@@ -1093,22 +1104,23 @@ This study evaluated Early, Deep, and Late Fusion for binary glaucoma screening 
     \centering
     \caption{Summary of the official test-set results for binary glaucoma screening and multiclass glaucoma grading.}
     \label{tab:summary_results}
-    \resizebox{\columnwidth}{!}{%
-        \begin{tabular}{|l|c|c|c|c|}
+    \scriptsize
+    \resizebox{0.8\columnwidth}{!}{%
+        \begin{tabular}{lcccc}
             \hline
             \multirow{2}{*}{\textbf{Fusion Strategy}} &
-            \multicolumn{2}{c|}{\textbf{Screening}}   &
-            \multicolumn{2}{c|}{\textbf{Grading}}                                                               \\
+            \multicolumn{2}{c}{\textbf{Screening}}    &
+            \multicolumn{2}{c}{\textbf{Grading}}                                                                              \\
             \cline{2-5}
-                                                      & \textbf{AUC-ROC}  & \textbf{Accuracy}
-                                                      & \textbf{Accuracy} & \textbf{QWK}                        \\
+                                                      &
+            \textbf{AUC-ROC}                          &
+            \textbf{Accuracy}                         &
+            \textbf{Accuracy}                         &
+            \textbf{QWK}                                                                                                      \\
             \hline
-            Early Fusion                              & 0.9743            & 0.9200            & 0.7400 & 0.8065 \\
-            \hline
-            Deep Fusion                               & \textbf{0.9952}   & \textbf{0.9500}
-                                                      & \textbf{0.8100}   & \textbf{0.8633}                     \\
-            \hline
-            Late Fusion                               & 0.9835            & \textbf{0.9500}   & 0.7800 & 0.8355 \\
+            Early Fusion                              & 0.9743          & 0.9200          & 0.7400          & 0.8065          \\
+            Deep Fusion                               & \textbf{0.9952} & \textbf{0.9500} & \textbf{0.8100} & \textbf{0.8633} \\
+            Late Fusion                               & 0.9835          & \textbf{0.9500} & 0.7800          & 0.8355          \\
             \hline
         \end{tabular}}
 \end{table}
